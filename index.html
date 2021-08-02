@@ -1,0 +1,202 @@
+<!--Doctype HTML-->
+<html>
+<head>
+	<title>Collapsible Table</title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding: 0;
+			font-family: sans-serif;
+			font-size: 14px;
+		}
+
+		#container{
+			width: 100%;
+			display: block;
+		}
+
+		#table{
+			margin: 0 auto;
+		}
+
+		#table{
+			background-color: rgb(40,41,35);
+			border: 1px solid #fff;
+		}
+
+		#table th{
+			padding:5px;
+			background-color: darkgreen;
+			color: #fff;
+			font-weight: bolder;
+		}
+
+		#table td{
+			padding: 5px;
+			color:#fff;
+
+		}
+
+		.tc-container{
+			margin:0;
+			padding:0;
+			width:100%;
+			min-width: 220px;
+			position: relative;
+		}
+		.tc-top-body{
+			width: 100%;
+			position:relative;
+			padding: 5px;
+			padding-bottom: 30px;
+		}
+
+		.tc-true-body{
+			width: 100%;
+			overflow:visible;
+			display: none;
+		}
+
+		.tc-button-expand{
+			position: absolute;
+			left:0;
+			bottom: 0;
+			width: 100px;
+			background-color:grey;
+			padding: 2px;
+		}
+		.tc-button-body{
+			width: 100%;
+			position: absolute;
+			left: 110px;
+			bottom: 1px;
+			padding: 2px;
+		}
+	</style>
+	<script type="text/javascript">
+		function transform_collapse_table(table){
+					const nodelist = table.children;
+					let thead = nodelist[0];
+					let baristh = thead.children[0];
+					const jumlah_baris = baristh.length;
+					baristh.innerHTML = "";//kosongkan header tabel
+					let newth = document.createElement('th');
+					newth.innerHTML = "DATA";
+					newth.setAttribute('colspan', jumlah_baris);
+					baristh.appendChild(newth);//pasang header baru
+					const tbody = nodelist[1];
+					let baris = tbody.children;
+					for(let i =0; i < baris.length; i++){//akses setiap baris
+						let td = baris[i].children;
+						let topbodytext=td[0].innerHTML+" "+td[1].innerHTML;
+						let truebodytext="";
+						let buttons="";
+						for(let a=0; a < td.length; a++){
+							let cltd = td[a].classList;
+							if(!(cltd.contains('tc-option'))){
+								truebodytext += td[a].innerHTML+" ";//sambungkan seluruh string
+							}else{
+								buttons += td[a].innerHTML+" ";
+							}
+						}
+						let tmp = "<div class='tc-container'><div class='tc-top-body'>"+topbodytext+"</div><div class='tc-true-body'>"+truebodytext+"</div><div class='tc-button-expand'>Lihat Detail</div><div class='tc-button-body'>"+buttons+"</div></div>";
+						let newtd = document.createElement('td');
+						newtd.innerHTML = tmp;
+						newtd.setAttribute('colspan', jumlah_baris);
+						baris[i].innerHTML = "";//kosongkan baris
+						baris[i].appendChild(newtd);//tambahkan baruis baru
+
+					}
+					table.classList.add('collapsed');
+		}
+
+		function collapse_table(){
+			let table = document.getElementsByClassName('collapsible-table');
+			for(let s=0; s < table.length; s++){
+				let collapsed = table[s].classList.contains('collapsed');
+				if(!collapsed){
+					let parent = table[s].parentElement;
+					const width_parent = parent.offsetWidth;
+					const width_table = table[s].offsetWidth;
+					if(width_table >= width_parent){
+						transform_collapse_table(table[s]);
+						table[s].style = 'width :'+width_parent+'px';
+					}
+				}
+			}
+		}
+
+		window.addEventListener('resize', function(event) {
+			collapse_table();
+		}, true);
+	</script>
+</head>
+<body>
+	<div id='container'>
+	<table id='table' class="collapsible-table">
+		<thead>
+			<tr>
+			<th class="tc-show">No.</th>
+			<th>KTP</th>
+			<th class="tc-show">Nama</th>
+			<th>Alamat</th>
+			<th class="tc-show" colspan="3">Aksi</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1.</td>
+				<td>231212312456213</td>
+				<td>Jajang Rukmana</td>
+				<td>Bogor</td>
+				<td class='cel-aksi tc-option'>Lihat</td>
+				<td class="cel-aksi tc-option">Edit</td>
+				<td class="cel-aksi tc-option">Hapus</td>
+			</tr>
+			<tr>
+				<td>1.</td>
+				<td>231212312456213</td>
+				<td>Jajang Rukmana</td>
+				<td>Bogor</td>
+				<td class='cel-aksi'>Lihat</td>
+				<td class="cel-aksi">Edit</td>
+				<td class="cel-aksi">Hapus</td>
+			</tr>
+			<tr>
+				<td>1.</td>
+				<td>231212312456213</td>
+				<td>Jajang Rukmana</td>
+				<td>Bogor</td>
+				<td class='cel-aksi'>Lihat</td>
+				<td class="cel-aksi">Edit</td>
+				<td class="cel-aksi">Hapus</td>
+			</tr>
+			<tr>
+				<td>1.</td>
+				<td>231212312456213</td>
+				<td>Jajang Rukmana</td>
+				<td>Bogor</td>
+				<td class='cel-aksi'>Lihat</td>
+				<td class="cel-aksi">Edit</td>
+				<td class="cel-aksi">Hapus</td>
+			</tr>
+			<tr>
+				<td>1.</td>
+				<td>231212312456213</td>
+				<td>Jajang Rukmana</td>
+				<td>Bogor</td>
+				<td class='cel-aksi'>Lihat</td>
+				<td class="cel-aksi">Edit</td>
+				<td class="cel-aksi">Hapus</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<div class='tc-container'>
+		<div class='tc-top-body'>123215241354321354</div>
+		<div class='tc-true-body'>123215241354321354, Risma Abadi, Bogor</div>
+		<div class='tc-button-expand'>Lihat Detail</div>
+		<div class='tc-button-body'>lihat edit hapus</div>
+	</div>
+</body>
+</html>
